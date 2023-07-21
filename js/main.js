@@ -9,7 +9,7 @@ function formatTime(seconds) {
 }
 
 // Event listener for the Process dropdown to update the Unit Process dropdown options
-const processDropdown = document.getElementById('Process');
+const processDropdown = document.getElementById('process');
 const unitProcessDropdown = document.getElementById('unitProcess');
 processDropdown.addEventListener('change', updateUnitProcessOptions);
 
@@ -18,7 +18,7 @@ function updateUnitProcessOptions() {
   let unitProcessOptions = '';
 
   switch (selectedProcess) {
-    case 'siembra':
+    case 'Siembra':
       unitProcessOptions = `
         <option value="Limpieza de bandejas">Limpieza de bandejas</option>
         <option value="Pesaje semilla">Pesaje semilla</option>
@@ -31,8 +31,8 @@ function updateUnitProcessOptions() {
         <option value="Transporte de bandejas al modulo">Transporte de bandejas al modulo</option>
       `;
       break;
-    case 'trasplante1':
-    case 'trasplante2':
+    case 'Trasplante1':
+    case 'Trasplante2':
       unitProcessOptions = `
         <option value="Limpieza de bandejas nuevas">Limpieza de bandejas nuevas</option>
         <option value="Descarga y pesado de bandejas">Descarga y pesado de bandejas</option>
@@ -43,7 +43,7 @@ function updateUnitProcessOptions() {
         <option value="Toma de datos trasplante">Toma de datos trasplante</option>
       `;
       break;
-    case 'cosecha':
+    case 'Cosecha':
       unitProcessOptions = `
         <option value="Descarga bandeja del modulo">Descarga bandeja del modulo</option>
         <option value="Recorte de raices de lechuga">Recorte de raices de lechuga</option>
@@ -63,11 +63,13 @@ function updateUnitProcessOptions() {
 }
 
 function addUnitOperation() {
+  const process = document.getElementById('process').value;
   const unitProcess = document.getElementById('unitProcess').value;
   const personInCharge = document.getElementById('personInCharge').value;
 
   // Create a new stopwatch instance and add it to the stopwatches array
   const stopwatch = {
+    process: process,
     unitProcess: unitProcess,
     personInCharge: personInCharge,
     startTime: Date.now(),
@@ -75,7 +77,10 @@ function addUnitOperation() {
     isRunning: true
   };
 
-  stopwatch.interval = setInterval(() => updateStopwatch(stopwatch), 1000);
+  function startUpdatingStopwatch() {
+    setInterval(() => updateStopwatch(stopwatch), 1000);
+  }
+ 
 
   stopwatches.push(stopwatch);
 
@@ -88,15 +93,10 @@ function addUnitOperation() {
   }
 
   // Clear the input fields for the next unit operation
+  document.getElementById('process').value = '';
   document.getElementById('unitProcess').value = '';
   document.getElementById('personInCharge').value = '';
 }
-
-/* function startUpdatingStopwatch() {
-  // Only start the interval if there is at least one running stopwatch
-  setInterval(updateAllStopwatches, 1000);
-}
- */
 
 function updateStopwatch() {
     stopwatches.forEach(stopwatch => {
@@ -114,26 +114,34 @@ function addRecordToTable(stopwatch) {
   const newRow = table.insertRow();
 
   const cell1 = newRow.insertCell(0);
-  cell1.textContent = stopwatch.unitProcess;
+  cell1.textContent = stopwatch.process;
 
   const cell2 = newRow.insertCell(1);
-  cell2.textContent = stopwatch.personInCharge;
+  cell2.textContent = stopwatch.unitProcess;
 
   const cell3 = newRow.insertCell(2);
-  cell3.textContent = formatTime(0);
+  cell3.textContent = stopwatch.personInCharge;
 
   const cell4 = newRow.insertCell(3);
+  cell4.textContent = formatTime(0);
+
+  const cell5 = newRow.insertCell(4);
+  const inputOutput = document.createElement('textarea')
+  inputOutput.textContent = 'Ouput'
+  cell5.appendChild(inputOutput)
+
+  const cell6 = newRow.insertCell(5);
   const stopButton = document.createElement('button');
   stopButton.textContent = 'Stop Stopwatch';
   stopButton.onclick = function () {
     stopStopwatch(stopwatch);
   };
-  cell4.appendChild(stopButton);
+  cell6.appendChild(stopButton);
 
   // Set a unique ID for the timer span to update it later
   const timerSpan = document.createElement('span');
   timerSpan.id = stopwatch.unitProcess;
-  cell3.appendChild(timerSpan);
+  cell4.appendChild(timerSpan);
 }
 
 function stopStopwatch(stopwatch) {
@@ -148,6 +156,6 @@ function stopStopwatch(stopwatch) {
     const table = document.getElementById('records');
     const rowIndex = stopwatches.indexOf(stopwatch);
     const row = table.rows[rowIndex];
-    row.cells[2].textContent = durationFormatted;
+    row.cells[3].textContent = durationFormatted;
   }
 }
