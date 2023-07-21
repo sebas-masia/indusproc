@@ -53,3 +53,9 @@ th {
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+table input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}

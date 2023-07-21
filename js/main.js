@@ -127,8 +127,9 @@ function addRecordToTable(stopwatch) {
   cell4.textContent = formatTime(0);
 
   const cell5 = newRow.insertCell(4);
-  const inputOutput = document.createElement('textarea')
-  inputOutput.textContent = 'Ouput'
+  const inputOutput = document.createElement('input');
+  inputOutput.type = 'text';
+  inputOutput.placeholder = 'Enter output';
   cell5.appendChild(inputOutput)
 
   const cell6 = newRow.insertCell(5);
@@ -161,14 +162,45 @@ function stopStopwatch(stopwatch) {
     const rowIndex = stopwatches.indexOf(stopwatch);
     const row = table.rows[rowIndex];
     row.cells[3].textContent = durationFormatted;
+
+    // Get the output value from the input box
+    const inputOutput = row.cells[4].querySelector('input');
+    const outputValue = inputOutput.value;
+    stopwatch.output = outputValue;
   }
 }
 
 function exportToExcel() {
-  const table = document.getElementById('records');
-  const workbook = XLSX.utils.table_to_book(table);
-  XLSX.writeFile(workbook, 'unit_operations.xlsx');
+  // Create a new workbook and a new worksheet
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.aoa_to_sheet([]);
+
+  // Add the headers to the worksheet
+  const headers = ['Operacion', 'Operacion Unitaria', 'Persona a Cargo', 'Duracion', 'Output'];
+  XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
+
+  // Loop through each stopwatch and add the data to the worksheet
+  stopwatches.forEach((stopwatch, index) => {
+    const rowIndex = index + 1; // Add 1 to skip the table header row
+
+    const rowData = [
+      stopwatch.process,
+      stopwatch.unitProcess,
+      stopwatch.personInCharge,
+      formatTime(stopwatch.duration),
+      stopwatch.output || '', // Set the output value or an empty string if no output
+    ];
+
+    XLSX.utils.sheet_add_aoa(worksheet, [rowData], { origin: `A${rowIndex + 1}` });
+  });
+
+  // Add the worksheet to the workbook
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  // Export the workbook to a file
+  XLSX.writeFile(workbook, 'industrial_process_data.xlsx');
 }
+
 
 function exportToCSV() {
   const table = document.getElementById('records');
