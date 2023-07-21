@@ -70,6 +70,7 @@ function addUnitOperation() {
 
   // Create a new stopwatch instance and add it to the stopwatches array
   const stopwatch = {
+    id: stopwatchIdCounter,
     process: process,
     unitProcess: unitProcess,
     personInCharge: personInCharge,
@@ -77,6 +78,7 @@ function addUnitOperation() {
     interval: null,
     isRunning: true
   };
+  stopwatchIdCounter++;
 
   function startUpdatingStopwatch() {
     setInterval(() => updateStopwatch(stopwatch), 1000);
@@ -139,10 +141,6 @@ function addRecordToTable(stopwatch) {
     stopStopwatch(stopwatch);
   };
   cell6.appendChild(stopButton);
-
-  // Set a unique ID for the timer span to update it later
-  stopwatch.id = stopwatchIdCounter;
-  stopwatchIdCounter++;
 
   const timerSpan = document.createElement('span');
   timerSpan.id = `timer_${stopwatch.id}`;
