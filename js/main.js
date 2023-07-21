@@ -6,7 +6,61 @@ function formatTime(seconds) {
     const remainingSeconds = seconds % 60;
   
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-}    
+}
+
+// Event listener for the Process dropdown to update the Unit Process dropdown options
+const processDropdown = document.getElementById('Process');
+const unitProcessDropdown = document.getElementById('unitProcess');
+processDropdown.addEventListener('change', updateUnitProcessOptions);
+
+function updateUnitProcessOptions() {
+  const selectedProcess = processDropdown.value;
+  let unitProcessOptions = '';
+
+  switch (selectedProcess) {
+    case 'siembra':
+      unitProcessOptions = `
+        <option value="Limpieza de bandejas">Limpieza de bandejas</option>
+        <option value="Pesaje semilla">Pesaje semilla</option>
+        <option value="Preparacion solucion de crecimiento">Preparacion solucion de crecimiento</option>
+        <option value="Preparacion sustrato">Preparacion sustrato</option>
+        <option value="Insercion de semillas en sustrato">Insercion de semillas en sustrato</option>
+        <option value="Preparacion solucion de cloro">Preparacion solucion de cloro</option>
+        <option value="Rocio de siembra con cloro">Rocio de siembra con cloro</option>
+        <option value="Picado de sustrato en bandeja">Picado de sustrato en bandeja</option>
+        <option value="Transporte de bandejas al modulo">Transporte de bandejas al modulo</option>
+      `;
+      break;
+    case 'trasplante1':
+    case 'trasplante2':
+      unitProcessOptions = `
+        <option value="Limpieza de bandejas nuevas">Limpieza de bandejas nuevas</option>
+        <option value="Descarga y pesado de bandejas">Descarga y pesado de bandejas</option>
+        <option value="Retiro de especie de bandeja">Retiro de especie de bandeja</option>
+        <option value="Insercion cubos en bandeja nueva">Insercion cubos en bandeja nueva</option>
+        <option value="Pesaje bandejas trasplantadas">Pesaje bandejas trasplantadas</option>
+        <option value="Carga de bandejas al modulo">Carga de bandejas al modulo</option>
+        <option value="Toma de datos trasplante">Toma de datos trasplante</option>
+      `;
+      break;
+    case 'cosecha':
+      unitProcessOptions = `
+        <option value="Descarga bandeja del modulo">Descarga bandeja del modulo</option>
+        <option value="Recorte de raices de lechuga">Recorte de raices de lechuga</option>
+        <option value="Pesaje de bandejas cosechadas">Pesaje de bandejas cosechadas</option>
+        <option value="Remocion de impurezas en la lechuga">Remocion de impurezas en la lechuga</option>
+        <option value="Pesaje de lechugas para empaquetado">Pesaje de lechugas para empaquetado</option>
+        <option value="Empaquetado de lechugas">Empaquetado de lechugas</option>
+        <option value="Sellado de paquetes">Sellado de paquetes</option>
+        <option value="Etiquetado de paquetes">Etiquetado de paquetes</option>
+      `;
+      break;
+    default:
+      unitProcessOptions = ''; // Empty options for unknown process
+  }
+
+  unitProcessDropdown.innerHTML = unitProcessOptions;
+}
 
 function addUnitOperation() {
   const unitProcess = document.getElementById('unitProcess').value;
@@ -43,7 +97,6 @@ function addUnitOperation() {
   setInterval(updateAllStopwatches, 1000);
 }
  */
-
 
 function updateStopwatch() {
     stopwatches.forEach(stopwatch => {

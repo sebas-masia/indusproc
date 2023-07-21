@@ -9,15 +9,29 @@
 <body>
     <h1>Industrial Process Time Tracker</h1>
     <div class="input-section">
+        <label for="Process">Proceso:</label>
+        <select name="Process" id="Process">
+            <option value="siembra">Siembra</option>
+            <option value="trasplante1">Trasplante 1</option>
+            <option value="trasplante2">Trasplante 2</option>
+            <option value="cosecha">Cosecha</option>
+        </select>
         <label for="unitProcess">Operacion Unitaria:</label>
-        <input type="text" id="unitProcess" placeholder="Ingrese operacion unitaria">
+        <select name="unitProcess" id="unitProcess">
+            <!-- Unit process options will be dynamically updated based on the selected process -->
+        </select>
         <label for="personInCharge">Persona a cargo:</label>
-        <input type="text" id="personInCharge" placeholder="Ingrese persona a cargo">
+        <select name="personInCharge" id="personInCharge">
+            <option value="Jesus">Jesus</option>
+            <option value="Jose">Jose</option>
+            <option value="Eduardo">Eduardo</option>
+        </select>
         <button onclick="addUnitOperation()">Start Stopwatch</button>
     </div>
     <table>
         <thead>
             <tr>
+                <th>Proceso</th>
                 <th>Operacion Unitaria</th>
                 <th>Persona a Cargo</th>
                 <th>Duracion</th>
