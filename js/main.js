@@ -21,6 +21,8 @@ function addUnitOperation() {
     isRunning: true
   };
 
+  stopwatch.interval = setInterval(() => updateStopwatch(stopwatch), 1000);
+
   stopwatches.push(stopwatch);
 
   // Add the unit operation to the table
@@ -36,12 +38,14 @@ function addUnitOperation() {
   document.getElementById('personInCharge').value = '';
 }
 
-function startUpdatingStopwatch() {
+/* function startUpdatingStopwatch() {
   // Only start the interval if there is at least one running stopwatch
   setInterval(updateAllStopwatches, 1000);
 }
+ */
 
-function updateAllStopwatches() {
+
+function updateStopwatch() {
     stopwatches.forEach(stopwatch => {
       if (stopwatch.isRunning) {
         const currentTime = Date.now();
