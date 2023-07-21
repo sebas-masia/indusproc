@@ -159,3 +159,23 @@ function stopStopwatch(stopwatch) {
     row.cells[3].textContent = durationFormatted;
   }
 }
+
+function exportToExcel() {
+  const table = document.getElementById('records');
+  const workbook = XLSX.utils.table_to_book(table);
+  XLSX.writeFile(workbook, 'unit_operations.xlsx');
+}
+
+function exportToCSV() {
+  const table = document.getElementById('records');
+  const csv = Papa.unparse(table);
+  const csvData = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const csvURL = URL.createObjectURL(csvData);
+  const tempLink = document.createElement('a');
+  tempLink.href = csvURL;
+  tempLink.setAttribute('download', 'unit_operations.csv');
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+}
+

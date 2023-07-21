@@ -4,6 +4,10 @@
 <head>
     <title>Industrial Process Time Tracker</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- External Excel and CSV libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
 </head>
 
 <body>
@@ -42,6 +46,11 @@
         <tbody id="records">
         </tbody>
     </table>
+    <div>
+        <button onclick="exportToExcel()">Export to Excel</button>
+        <button onclick="exportToCSV()">Export to CSV</button>
+    </div>
+
     <script src="js/main.js"></script>
 </body>
 
