@@ -1,4 +1,5 @@
 let stopwatches = [];
+let stopwatchIdCounter = 1;
 
 function formatTime(seconds) {
     const hours = Math.floor(seconds / 3600);
@@ -103,7 +104,7 @@ function updateStopwatch() {
       if (stopwatch.isRunning) {
         const currentTime = Date.now();
         stopwatch.duration = Math.floor((currentTime - stopwatch.startTime) / 1000);
-        const timerSpan = document.getElementById(stopwatch.unitProcess);
+        const timerSpan = document.getElementById(`timer_${stopwatch.id}`);
         timerSpan.textContent = formatTime(stopwatch.duration);
       }
     });
@@ -139,8 +140,11 @@ function addRecordToTable(stopwatch) {
   cell6.appendChild(stopButton);
 
   // Set a unique ID for the timer span to update it later
+  stopwatch.id = stopwatchIdCounter;
+  stopwatchIdCounter++;
+
   const timerSpan = document.createElement('span');
-  timerSpan.id = stopwatch.unitProcess;
+  timerSpan.id = `timer_${stopwatch.id}`;
   cell4.appendChild(timerSpan);
 }
 
