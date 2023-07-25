@@ -117,34 +117,44 @@ function addRecordToTable(stopwatch) {
   const newRow = table.insertRow();
 
   const cell1 = newRow.insertCell(0);
-  cell1.textContent = stopwatch.process;
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+  cell1.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
   const cell2 = newRow.insertCell(1);
-  cell2.textContent = stopwatch.unitProcess;
+  cell2.textContent = stopwatch.process;
 
   const cell3 = newRow.insertCell(2);
-  cell3.textContent = stopwatch.personInCharge;
+  cell3.textContent = stopwatch.unitProcess;
 
   const cell4 = newRow.insertCell(3);
-  cell4.textContent = formatTime(0);
+  cell4.textContent = stopwatch.personInCharge;
 
   const cell5 = newRow.insertCell(4);
+  cell5.textContent = formatTime(0);
+
+  const cell6= newRow.insertCell(5);
   const inputOutput = document.createElement('input');
   inputOutput.type = 'text';
   inputOutput.placeholder = 'Enter output';
-  cell5.appendChild(inputOutput)
+  cell6.appendChild(inputOutput)
 
-  const cell6 = newRow.insertCell(5);
+  const cell7 = newRow.insertCell(6);
   const stopButton = document.createElement('button');
   stopButton.textContent = 'Stop Stopwatch';
   stopButton.onclick = function () {
     stopStopwatch(stopwatch);
   };
-  cell6.appendChild(stopButton);
+  cell7.appendChild(stopButton);
 
   const timerSpan = document.createElement('span');
   timerSpan.id = `timer_${stopwatch.id}`;
-  cell4.appendChild(timerSpan);
+  cell5.appendChild(timerSpan);
 }
 
 function stopStopwatch(stopwatch) {
@@ -159,10 +169,10 @@ function stopStopwatch(stopwatch) {
     const table = document.getElementById('records');
     const rowIndex = stopwatches.indexOf(stopwatch);
     const row = table.rows[rowIndex];
-    row.cells[3].textContent = durationFormatted;
+    row.cells[4].textContent = durationFormatted;
 
     // Get the output value from the input box
-    const inputOutput = row.cells[4].querySelector('input');
+    const inputOutput = row.cells[5].querySelector('input');
     const outputValue = inputOutput.value;
     stopwatch.output = outputValue;
   }
