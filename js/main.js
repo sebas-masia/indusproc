@@ -54,6 +54,7 @@ function updateUnitProcessOptions() {
         <option value="Empaquetado de lechugas">Empaquetado de lechugas</option>
         <option value="Sellado de paquetes">Sellado de paquetes</option>
         <option value="Etiquetado de paquetes">Etiquetado de paquetes</option>
+        <option value="Toma de datos cosecha">Toma de datos cosecha</option>
       `;
       break;
     default:
@@ -68,8 +69,18 @@ function addUnitOperation() {
   const unitProcess = document.getElementById('unitProcess').value;
   const personInCharge = document.getElementById('personInCharge').value;
 
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+  const startDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
   // Create a new stopwatch instance and add it to the stopwatches array
   const stopwatch = {
+    startDate: startDate,
     id: stopwatchIdCounter,
     process: process,
     unitProcess: unitProcess,
@@ -117,14 +128,7 @@ function addRecordToTable(stopwatch) {
   const newRow = table.insertRow();
 
   const cell1 = newRow.insertCell(0);
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const seconds = date.getSeconds().toString().padStart(2, '0');
-  cell1.textContent = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  cell1.textContent = stopwatch.startDate;
 
   const cell2 = newRow.insertCell(1);
   cell2.textContent = stopwatch.process;
@@ -151,10 +155,28 @@ function addRecordToTable(stopwatch) {
     stopStopwatch(stopwatch);
   };
   cell7.appendChild(stopButton);
+  const outputButton = document.createElement('button');
+  outputButton.textContent = 'Set Output';
+  outputButton.onclick = function() {
+    setOutput(stopwatch);
+  }
+  cell7.appendChild(outputButton);
 
   const timerSpan = document.createElement('span');
   timerSpan.id = `timer_${stopwatch.id}`;
   cell5.appendChild(timerSpan);
+}
+
+function setOutput(stopwatch) {
+  const table = document.getElementById('records');
+  const rowIndex = stopwatches.indexOf(stopwatch);
+  const row = table.rows[rowIndex];
+  
+  // Get the output value from the input box
+  const inputOutput = row.cells[5].querySelector('input');
+  const outputValue = inputOutput.value;
+  stopwatch.output = outputValue;
+  console.log('Im working')
 }
 
 function stopStopwatch(stopwatch) {
@@ -171,10 +193,6 @@ function stopStopwatch(stopwatch) {
     const row = table.rows[rowIndex];
     row.cells[4].textContent = durationFormatted;
 
-    // Get the output value from the input box
-    const inputOutput = row.cells[5].querySelector('input');
-    const outputValue = inputOutput.value;
-    stopwatch.output = outputValue;
   }
 }
 
@@ -184,7 +202,7 @@ function exportToExcel() {
   const worksheet = XLSX.utils.aoa_to_sheet([]);
 
   // Add the headers to the worksheet
-  const headers = ['Operacion', 'Operacion Unitaria', 'Persona a Cargo', 'Duracion', 'Output'];
+  const headers = ['Fecha', 'Operacion', 'Operacion Unitaria', 'Persona a Cargo', 'Duracion', 'Output'];
   XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
 
   // Loop through each stopwatch and add the data to the worksheet
@@ -192,6 +210,7 @@ function exportToExcel() {
     const rowIndex = index + 1; // Add 1 to skip the table header row
 
     const rowData = [
+      stopwatch.startDate,
       stopwatch.process,
       stopwatch.unitProcess,
       stopwatch.personInCharge,
