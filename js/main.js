@@ -161,6 +161,13 @@ function addRecordToTable(stopwatch) {
     setOutput(stopwatch);
   }
   cell7.appendChild(outputButton);
+  const pauseButton = document.createElement('button');
+  pauseButton.textContent = 'Pause Stopwatch';
+  pauseButton.id = `pause_${stopwatch.id}`;
+  pauseButton.onclick = function() {
+    pauseStopwatch(stopwatch);
+  }
+  cell7.appendChild(pauseButton);
 
   const timerSpan = document.createElement('span');
   timerSpan.id = `timer_${stopwatch.id}`;
@@ -176,7 +183,22 @@ function setOutput(stopwatch) {
   const inputOutput = row.cells[5].querySelector('input');
   const outputValue = inputOutput.value;
   stopwatch.output = outputValue;
-  console.log('Im working')
+}
+
+function pauseStopwatch(stopwatch) {
+  const pauseButton = document.getElementById(`pause_${stopwatch.id}`);
+  
+  if (stopwatch.isRunning) {
+    clearInterval(stopwatch.interval);
+    stopwatch.isRunning = false;
+    pauseButton.textContent = 'Resume Stopwatch';
+  } else {
+    // If the stopwatch is paused, start the interval again to resume counting
+    stopwatch.isRunning = true;
+    stopwatch.startTime = Date.now() - (stopwatch.duration * 1000);
+    stopwatch.interval = setInterval(() => updateStopwatch(stopwatch), 1000);
+    pauseButton.textContent = 'Pause Stopwatch'
+  }
 }
 
 function stopStopwatch(stopwatch) {
