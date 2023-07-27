@@ -18,14 +18,24 @@ label {
 
 input {
     width: 100%;
-    padding: 5px;
+    padding: 8px;
     margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 button {
-    padding: 5px 10px;
+    padding: 8px 16px;
     margin-right: 10px;
     cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #45a049;
 }
 
 .stopwatch {
@@ -43,11 +53,12 @@ table,
 th,
 td {
     border: 1px solid black;
-    padding: 8px;
+    padding: 10px;
 }
 
 th {
     text-align: left;
+    background-color: #f2f2f2;
 }
 
 tr:nth-child(even) {
@@ -58,4 +69,23 @@ table input[type="text"] {
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+table .button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table .button-container button {
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+table .button-container button:hover {
+    background-color: #0056b3;
 }
