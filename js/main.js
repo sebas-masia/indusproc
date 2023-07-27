@@ -65,6 +65,7 @@ function updateUnitProcessOptions() {
 }
 
 function addUnitOperation() {
+  const product = document.getElementById('product').value;
   const process = document.getElementById('process').value;
   const unitProcess = document.getElementById('unitProcess').value;
   const personInCharge = document.getElementById('personInCharge').value;
@@ -82,6 +83,7 @@ function addUnitOperation() {
   const stopwatch = {
     startDate: startDate,
     id: stopwatchIdCounter,
+    product: product,
     process: process,
     unitProcess: unitProcess,
     personInCharge: personInCharge,
@@ -107,6 +109,7 @@ function addUnitOperation() {
   }
 
   // Clear the input fields for the next unit operation
+  document.getElementById('product').value = '';
   document.getElementById('process').value = '';
   document.getElementById('unitProcess').value = '';
   document.getElementById('personInCharge').value = '';
@@ -131,47 +134,50 @@ function addRecordToTable(stopwatch) {
   cell1.textContent = stopwatch.startDate;
 
   const cell2 = newRow.insertCell(1);
-  cell2.textContent = stopwatch.process;
+  cell2.textContent = stopwatch.product;
 
   const cell3 = newRow.insertCell(2);
-  cell3.textContent = stopwatch.unitProcess;
+  cell3.textContent = stopwatch.process;
 
   const cell4 = newRow.insertCell(3);
-  cell4.textContent = stopwatch.personInCharge;
+  cell4.textContent = stopwatch.unitProcess;
 
   const cell5 = newRow.insertCell(4);
-  cell5.textContent = formatTime(0);
+  cell5.textContent = stopwatch.personInCharge;
 
-  const cell6= newRow.insertCell(5);
+  const cell6 = newRow.insertCell(5);
+  cell6.textContent = formatTime(0);
+
+  const cell7= newRow.insertCell(6);
   const inputOutput = document.createElement('input');
   inputOutput.type = 'text';
   inputOutput.placeholder = 'Enter output';
-  cell6.appendChild(inputOutput)
+  cell7.appendChild(inputOutput)
 
-  const cell7 = newRow.insertCell(6);
+  const cell8 = newRow.insertCell(7);
   const stopButton = document.createElement('button');
   stopButton.textContent = 'Stop Stopwatch';
   stopButton.onclick = function () {
     stopStopwatch(stopwatch);
   };
-  cell7.appendChild(stopButton);
+  cell8.appendChild(stopButton);
   const outputButton = document.createElement('button');
   outputButton.textContent = 'Set Output';
   outputButton.onclick = function() {
     setOutput(stopwatch);
   }
-  cell7.appendChild(outputButton);
+  cell8.appendChild(outputButton);
   const pauseButton = document.createElement('button');
   pauseButton.textContent = 'Pause Stopwatch';
   pauseButton.id = `pause_${stopwatch.id}`;
   pauseButton.onclick = function() {
     pauseStopwatch(stopwatch);
   }
-  cell7.appendChild(pauseButton);
+  cell8.appendChild(pauseButton);
 
   const timerSpan = document.createElement('span');
   timerSpan.id = `timer_${stopwatch.id}`;
-  cell5.appendChild(timerSpan);
+  cell6.appendChild(timerSpan);
 }
 
 function setOutput(stopwatch) {
@@ -180,7 +186,7 @@ function setOutput(stopwatch) {
   const row = table.rows[rowIndex];
   
   // Get the output value from the input box
-  const inputOutput = row.cells[5].querySelector('input');
+  const inputOutput = row.cells[6].querySelector('input');
   const outputValue = inputOutput.value;
   stopwatch.output = outputValue;
 }
@@ -213,7 +219,7 @@ function stopStopwatch(stopwatch) {
     const table = document.getElementById('records');
     const rowIndex = stopwatches.indexOf(stopwatch);
     const row = table.rows[rowIndex];
-    row.cells[4].textContent = durationFormatted;
+    row.cells[5].textContent = durationFormatted;
 
   }
 }
@@ -224,7 +230,7 @@ function exportToExcel() {
   const worksheet = XLSX.utils.aoa_to_sheet([]);
 
   // Add the headers to the worksheet
-  const headers = ['Fecha', 'Operacion', 'Operacion Unitaria', 'Persona a Cargo', 'Duracion', 'Output'];
+  const headers = ['Fecha', 'Producto', 'Operacion', 'Operacion Unitaria', 'Persona a Cargo', 'Duracion', 'Output'];
   XLSX.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
 
   // Loop through each stopwatch and add the data to the worksheet
@@ -233,6 +239,7 @@ function exportToExcel() {
 
     const rowData = [
       stopwatch.startDate,
+      stopwatch.product,
       stopwatch.process,
       stopwatch.unitProcess,
       stopwatch.personInCharge,
