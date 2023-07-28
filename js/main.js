@@ -47,11 +47,11 @@ function updateUnitProcessOptions() {
     case 'Cosecha':
       unitProcessOptions = `
         <option value="Descarga bandeja del modulo">Descarga bandeja del modulo</option>
-        <option value="Recorte de raices de lechuga">Recorte de raices de lechuga</option>
+        <option value="Recorte de raices del producto">Recorte de raices del producto</option>
         <option value="Pesaje de bandejas cosechadas">Pesaje de bandejas cosechadas</option>
-        <option value="Remocion de impurezas en la lechuga">Remocion de impurezas en la lechuga</option>
-        <option value="Pesaje de lechugas para empaquetado">Pesaje de lechugas para empaquetado</option>
-        <option value="Empaquetado de lechugas">Empaquetado de lechugas</option>
+        <option value="Remocion de impurezas en el producto">Remocion de impurezas en el producto</option>
+        <option value="Pesaje de producto para empaquetado">Pesaje de producto para empaquetado</option>
+        <option value="Empaquetado de producto">Empaquetado de producto</option>
         <option value="Sellado de paquetes">Sellado de paquetes</option>
         <option value="Etiquetado de paquetes">Etiquetado de paquetes</option>
         <option value="Toma de datos cosecha">Toma de datos cosecha</option>
